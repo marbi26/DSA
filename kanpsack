@@ -1,0 +1,188 @@
+#include <stdio.h>
+ typedef struct
+ {
+     int weight[100];
+     int profit[100];
+ }knap;
+ void swap(int *x,int *y)
+ {
+     int t=*x;
+     *x=*y;
+     *y=t;
+ }
+ void greedy1(knap k,int capacity,int n)
+ {
+     int index[100];
+     for(int i=0;i<n;i++)
+     index[i]=i;
+ 
+     for(int i=n-2;i>=0;i--)
+     {
+         for(int j=0;j<=i;j++)
+         {
+             if(k.profit[j]<k.profit[j+1])
+             {
+                 swap(&k.profit[j],&k.profit[j+1]);
+                 swap(&k.weight[j],&k.weight[j+1]);
+                 int t=index[j];
+                 index[j]=index[j+1];
+                 index[j+1]=t;
+             }
+         }
+     }
+ 
+     float ans=0,x[100]; int c=0;
+     for(int i=0;i<n&&capacity;i++)
+     {
+         int wt=k.weight[i];
+         int p=k.profit[i];
+         if(wt>capacity)
+         {            
+             ans+=p*((float)capacity/wt);
+             x[index[i]]=(float)capacity/wt;
+             capacity=0;
+         }
+         else
+         {
+             ans+=p;
+             capacity-=wt;
+             x[index[i]]=1;
+         }
+     }
+     printf("Maximum profit when greedy is applied on profit = %.2f\n",ans);
+     printf("Items are taken in these fractions\n");
+     for(int i=0;i<n;i++)
+     printf("%.2f ",x[i]);
+     printf("\n");
+ }
+ float greedy2(knap k,int capacity,int n)
+ {
+     int index[100];
+     for(int i=0;i<n;i++)
+     index[i]=i;
+     for(int i=n-2;i>=0;i--)
+     {
+         for(int j=0;j<=i;j++)
+         {
+             if(k.weight[j]>k.weight[j+1])
+             {
+                 swap(&k.profit[j],&k.profit[j+1]);
+                 swap(&k.weight[j],&k.weight[j+1]);
+                 int t=index[j];
+                 index[j]=index[j+1];
+                 index[j+1]=t;
+             }
+         }
+     }
+ 
+     float ans=0,x[100]; int c=0;
+     for(int i=0;i<n&&capacity;i++)
+     {
+         int wt=k.weight[i];
+         int p=k.profit[i];
+         if(wt>capacity)
+         {            
+             ans+=p*((float)capacity/wt);
+             x[index[i]]=(float)capacity/wt;
+             capacity=0;
+         }
+         else
+         {
+             ans+=p;
+             x[index[i]]=1;
+             capacity-=wt;
+         }
+     }
+ 
+     printf("Maximum profit when greedy is applied on weight = %.2f\n",ans);
+     printf("Items are taken in these fractions");
+     for(int i=0;i<n;i++)
+     printf("%.2f ",x[i]);
+     printf("\n");
+ 
+     return ans;
+ }
+ float greedy3(knap k,int capacity,int n)
+ {
+     int index[100];
+     for(int i=0;i<n;i++)
+     index[i]=i;
+     for(int i=n-2;i>=0;i--)
+     {
+         for(int j=0;j<=i;j++)
+         {
+             if((float)k.profit[j]/k.weight[j]<(float)k.profit[j+1]/k.weight[j+1])
+             {
+                 swap(&k.profit[j],&k.profit[j+1]);
+                 swap(&k.weight[j],&k.weight[j+1]);
+                 int t=index[j];
+                 index[j]=index[j+1];
+                 index[j+1]=t;
+             }
+         }
+     }
+     
+     float ans=0,x[100]; int c=0;
+     for(int i=0;i<n&&capacity;i++)
+     {
+         int wt=k.weight[i];
+         int p=k.profit[i];
+         if(wt>capacity)
+         {            
+             ans+=p*((float)capacity/wt);
+             x[index[i]]=(float)capacity/wt;
+             capacity=0;
+         }
+         else
+         {
+             ans+=p;
+             x[index[i]]=1;
+             capacity-=wt;
+         }
+     }
+ 
+     printf("Maximum profit when greedy is applied on profit/weight = %.2f\n",ans);
+     printf("Items are taken in these fractions\n");
+     for(int i=0;i<n;i++)
+     printf("%.2f ",x[i]);
+     printf("\n");
+ 
+     return ans;
+ }
+ int main()
+ {
+     knap k;
+     int n,capacity,q;
+     printf("Enter no of items : ");
+     scanf("%d",&n);
+     printf("Enter maximum capacity of knapsack: ");
+     scanf("%d",&capacity);
+ 
+     for(int i=0;i<n;i++)
+     {
+         printf("Enter profit and weight of item %d : ",i+1);
+         scanf("%d%d",&k.profit[i],&k.weight[i]);
+     }
+ 
+     do
+     {
+         printf("Enter 1 to find profit when greedy is applied on profit\n");
+         printf("Enter 2 to find profit when greedy is applied on weight\n");
+         printf("Enter 3 to find profit when greedy is applied on profit/weight\n");
+         printf("Enter 4 to exit\n");
+         printf("Enter your choice : ");
+         scanf("%d",&q);
+         switch(q)
+         {
+             case 1: greedy1(k,capacity,n);
+             break;
+             case 2: greedy2(k,capacity,n);
+             break;
+             case 3: greedy3(k,capacity,n);
+             break;
+             case 4: return 0;
+             default: printf("Invalid user input\n");
+         }
+     }while(q!=4);
+     return 0;
+ }
