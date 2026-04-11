@@ -97,43 +97,29 @@ class list{
         tail = temp;
     }
 
-    //iterative search
-    int searchItr(int key){
+    int getSize(){
+        int size = 0;
         Node* temp = head;
-        if(head == NULL){
-            cout << "LL is Empty..\n" << "Nothing can searched..\n";
-        }
-        int idx = 0;
+
         while(temp != NULL){
-            if(temp->data == key){
-                //cout << "key:" << key << " at index: " << idx << endl;
-                return idx;
-            }
-            temp = temp ->next;
-            idx++;
+            temp = temp -> next;
+            size++;
         }
-        return -1;
+        return size;
+    }
+    //find and remove
+    void remove_nth(int n){
+        Node* prev = head;
+        int size = getSize();
+
+        for(int i=1; i<(size-n); i++){
+            prev = prev -> next;
+        }
+        Node* toDel = prev -> next;
+        cout << "Delete:" <<toDel -> data << endl;
+        prev->next = prev -> next -> next;
     }
 
-    int helper(Node* temp, int key){
-        if(temp == NULL){
-            return -1;
-        }
-
-        if(temp -> data == key){
-            return 0;
-        }
-
-        int idx = helper(temp->next, key);
-        if(idx == -1){
-            return -1;
-        }
-        return idx+1;
-    }
-    //recursive search
-    int searchRec(int key){
-        return helper(head,key);
-    }
 
     void printlist(){
         Node* temp = head;
@@ -153,9 +139,7 @@ int main(){
     ll.push_back(4);
     ll.push_back(5);
     ll.printlist();
-    int r1 = ll.searchRec(3);
-    cout << "key:3 at index: " << r1 << endl; 
-    int r2 = ll.searchRec(50);
-    cout << "key:50 at index: " << r2 << endl; 
+    ll.remove_nth(2);
+    ll.printlist();
     return 0;
 }

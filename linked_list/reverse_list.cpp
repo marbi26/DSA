@@ -97,7 +97,7 @@ class list{
         tail = temp;
     }
 
-    //iterative search
+    //Iterative
     int searchItr(int key){
         Node* temp = head;
         if(head == NULL){
@@ -130,9 +130,24 @@ class list{
         }
         return idx+1;
     }
+
+
     //recursive search
     int searchRec(int key){
         return helper(head,key);
+    }
+
+    void reverse_list(){
+        Node* curr = head;
+        Node* prev = NULL;
+
+        while(curr != NULL){
+            Node* next = curr -> next;
+            curr -> next = prev;
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
     }
 
     void printlist(){
@@ -153,9 +168,7 @@ int main(){
     ll.push_back(4);
     ll.push_back(5);
     ll.printlist();
-    int r1 = ll.searchRec(3);
-    cout << "key:3 at index: " << r1 << endl; 
-    int r2 = ll.searchRec(50);
-    cout << "key:50 at index: " << r2 << endl; 
+    ll.reverse_list();
+    ll.printlist();
     return 0;
 }
